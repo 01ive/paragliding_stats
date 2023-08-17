@@ -25,6 +25,7 @@ class ParaglidingStats:
         self._min_vert_speed = 0
         self._speed_2d = list()
         self._max_average_speed_2d = 0
+        self._bearing = 0
 
     @property
     def full_distance_2d(self):
@@ -53,6 +54,9 @@ class ParaglidingStats:
     @property
     def max_average_speed_2d(self):
         return self._max_average_speed_2d
+    @property
+    def bearing(self):
+        return self._bearing
 
     def calculate_distances(self, point_1, point_2):
         p1 = (point_1.x, point_1.y)
@@ -87,6 +91,25 @@ class ParaglidingStats:
         self._max_speed_3d = max(self._max_speed_3d, ms_to_kmh(distance_3d / GPS_PERIOD))
         self._max_vert_speed = max(self._max_vert_speed, delta_elevation)
         self._min_vert_speed = min(self._min_vert_speed, delta_elevation)
+
+    def calculate_bearing(self, point_1, point_2):
+        bearing = math.atan2(math.sin(point_2.x - point_1.x) * math.cos(point_2.y),
+                                math.cos(point_1.y) * math.sin(point_2.y) - 
+                                math.sin(point_1.y) * math.cos(point_2.y) * math.cos(point_2.x - point_1.x)
+                                )
+        self._bearing = math.degrees(bearing)
+
+
+class ParaglidingLine(pygeoif.geometry.LineString):
+    def __init__(self, coodinates):
+        super().__init__(coodinates)
+        self._distance = 0
+        self._elevation = 0
+        self._speed_2d = 0
+        self._speed_3d = 0
+        self._vertical_speed = 0
+        self._bearing = 0
+
 
 class ParaglidingKML(kml.KML):
     def __init__(self, kml_file):
@@ -124,7 +147,8 @@ class ParaglidingKML(kml.KML):
     def read_trace(self):
         for item in self._items:
             if isinstance(item.geometry, pygeoif.geometry.LineString):
-                self._current_line = item.geometry
+                # self._current_line = item.geometry
+                self._current_line = ParaglidingLine(item.geometry.coords)
                 break
         print(self._current_line)
 
@@ -140,6 +164,9 @@ class ParaglidingKML(kml.KML):
             stats.calculate_elevation(point, next_point)
             # speed
             stats.calculate_speed(point, next_point)
+            # bearing
+            stats.calculate_bearing(point, next_point)
+            
         return stats
 
 
