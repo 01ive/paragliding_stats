@@ -8,9 +8,9 @@ min = lambda a, b : a if a <= b else b
 
 
 class ParaglidingPoint(pygeoif.geometry.Point):
-    def __init__(self, *args):
-        super().__init__(*args)
-        self.time = 0
+    def __init__(self, point, time=0):
+        super().__init__(point)
+        self.time = time
         self.distance_2d = 0
         self.distance_3d = 0
         self.elevation = 0
@@ -21,11 +21,14 @@ class ParaglidingPoint(pygeoif.geometry.Point):
 
 
 class ParaglidingLine(pygeoif.geometry.LineString):
-    def __init__(self, coodinates):
-        super().__init__(coodinates)
+    def __init__(self, coordinates, times=None):
+        super().__init__(coordinates)
         self.paraliding_geoms = tuple()
-        for point in self.geoms:
-            self.paraliding_geoms += ParaglidingPoint(point),
+        for i, point in enumerate(self.geoms):
+            if times is not None:
+                self.paraliding_geoms += ParaglidingPoint(point, times[i]),
+            else:
+                self.paraliding_geoms += ParaglidingPoint(point),
 
     def calculate_distances(self):
         for i in range(len(self.paraliding_geoms)-1):

@@ -1,8 +1,11 @@
 import datetime
 
 import kmlparagliding
+import igcparagliding
+
 
 kml_file = "2023-08-13-XSD-UB2F42-01.kml"
+igc_file = "2023-08-13-XSD-UB2F42-01.igc"
 
 
 if __name__ == "__main__":
@@ -19,7 +22,7 @@ if __name__ == "__main__":
     my_kml._current_line.calculate_speeds()
     my_kml._current_line.calculate_bearing()
     
-    print("My stats 2:")
+    print("KML stats:")
     print("Distance 2d: " + str(my_kml._current_line.distance_total_2d()) + " m")
     print("Distance 3d: " + str(my_kml._current_line.distance_total_3d()) + " m")
     print("Elevation gain: " + str(my_kml._current_line.elevation_total()) + " m")
@@ -31,4 +34,22 @@ if __name__ == "__main__":
     print("Max vertical speed: " + str(my_kml._current_line.max_vertical_speed()) + " m/s")
     print("Min vertical speed: " + str(my_kml._current_line.min_vertical_speed()) + " m/s")
         
-    pass
+    igc = igcparagliding.ParaglidingIGC(igc_file)
+    igc.read_trace()
+
+    igc._current_line.calculate_distances()
+    igc._current_line.calculate_elevation()
+    igc._current_line.calculate_speeds()
+    igc._current_line.calculate_bearing()
+
+    print("IGC stats:")
+    print("Distance 2d: " + str(igc._current_line.distance_total_2d()) + " m")
+    print("Distance 3d: " + str(igc._current_line.distance_total_3d()) + " m")
+    print("Elevation gain: " + str(igc._current_line.elevation_total()) + " m")
+    print("Elevation high: " + str(igc._current_line.high()) + " m")
+    print("Max speed 2d: " + str(igc._current_line.max_speed_2d()) + " km/h")
+    print("Max speed 3d: " + str(igc._current_line.max_speed_3d()) + " km/h")
+    print("Average speed 2d: " + str(igc._current_line.average_speed_2d()) + " km/h")
+    print("Average speed 3d: " + str(igc._current_line.average_speed_3d()) + " km/h")
+    print("Max vertical speed: " + str(igc._current_line.max_vertical_speed()) + " m/s")
+    print("Min vertical speed: " + str(igc._current_line.min_vertical_speed()) + " m/s")
