@@ -31,6 +31,7 @@ class ParaglidingIGC(Reader):
             coords += tuple((record['lat'], record['lon'], altitude)),
         self.track = geoparagliding.ParaglidingLine(coords, times)
 
+
 if __name__ == "__main__":
     igc_file = "2023-08-13-XSD-UB2F42-01.igc"
     igc = ParaglidingIGC(igc_file)

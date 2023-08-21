@@ -16,13 +16,9 @@ if __name__ == "__main__":
     date_time = datetime.datetime.combine(date, time)
     gps_period = datetime.timedelta(seconds=int(my_kml.items[2].name[-5]))
 
-    my_kml.track.calculate_time(date_time, gps_period)
-    my_kml.track.calculate_distances()
-    my_kml.track.calculate_elevation()
-    my_kml.track.calculate_speeds()
-    my_kml.track.calculate_bearing()
-    my_kml.track.calculate_finesse()
-    
+    my_kml.track.calculate_time(date_time, gps_period)    
+    my_kml.track.calculate_points_parameters()  
+
     print("KML stats:")
     print("Distance 2d: " + str(my_kml.track.distance_total_2d()) + " m")
     print("Distance 3d: " + str(my_kml.track.distance_total_3d()) + " m")
@@ -39,11 +35,7 @@ if __name__ == "__main__":
     igc = igcparagliding.ParaglidingIGC(igc_file)
     igc.read_trace()
 
-    igc.track.calculate_distances()
-    igc.track.calculate_elevation()
-    igc.track.calculate_speeds()
-    igc.track.calculate_bearing()
-    igc.track.calculate_finesse()
+    igc.track.calculate_points_parameters()
 
     print("IGC stats:")
     print("Distance 2d: " + str(igc.track.distance_total_2d()) + " m")

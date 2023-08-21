@@ -31,6 +31,13 @@ class ParaglidingLine(pygeoif.geometry.LineString):
             else:
                 self.paraliding_geoms += ParaglidingPoint(point),
 
+    def calculate_points_parameters(self):
+        self.calculate_distances()
+        self.calculate_elevation()
+        self.calculate_speeds()
+        self.calculate_bearing()
+        self.calculate_finesse()
+
     def calculate_distances(self):
         for i in range(len(self.paraliding_geoms)-1):
             point = self.paraliding_geoms[i]
