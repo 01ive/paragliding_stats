@@ -18,6 +18,7 @@ class ParaglidingPoint(pygeoif.geometry.Point):
         self.speed_3d = 0
         self.vertical_speed = 0
         self.bearing = 0
+        self.finesse = 0
 
 
 class ParaglidingLine(pygeoif.geometry.LineString):
@@ -69,6 +70,15 @@ class ParaglidingLine(pygeoif.geometry.LineString):
                                 math.sin(point.y) * math.cos(next_point.y) * math.cos(next_point.x - point.x)
                                 )
             next_point.bearing = math.degrees(bearing)
+
+    def calculate_finesse(self):
+        for i in range(len(self.paraliding_geoms)-1):
+            point = self.paraliding_geoms[i]
+            next_point = self.paraliding_geoms[i+1]
+            if point.z == next_point.z:
+                next_point.finesse = 9
+            else:
+                next_point.finesse = next_point.distance_2d / (point.z - next_point.z)
 
     def duration(self):
         first_point = self.paraliding_geoms[0]
@@ -136,3 +146,10 @@ class ParaglidingLine(pygeoif.geometry.LineString):
             average_speed_3d += point.speed_3d
         average_speed_3d /= len(self.paraliding_geoms)
         return average_speed_3d
+    
+    def average_finesse(self):
+        average_finesse = 0
+        for point in self.paraliding_geoms:
+            average_finesse += point.finesse
+        average_finesse /= len(self.paraliding_geoms)
+        return average_finesse

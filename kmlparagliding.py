@@ -38,6 +38,5 @@ class ParaglidingKML(kml.KML):
     def read_trace(self):
         for item in self._items:
             if isinstance(item.geometry, pygeoif.geometry.LineString):
-                self._current_line = geoparagliding.ParaglidingLine(item.geometry.coords)
+                self.track = geoparagliding.ParaglidingLine(item.geometry.coords)
                 break
-        print(self._current_line)
