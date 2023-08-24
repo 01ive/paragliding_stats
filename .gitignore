@@ -1,0 +1,4 @@
+venv
+*.kml
+.vscode
+__pycache__
