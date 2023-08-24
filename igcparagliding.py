@@ -1,5 +1,5 @@
 from aerofiles.igc import Reader
-from opensoar.competition.soaringspot import get_info_from_comment_lines
+# from opensoar.competition.soaringspot import get_info_from_comment_lines
 import datetime
 
 import geoparagliding
