@@ -2,7 +2,7 @@ import datetime
 
 import kmlparagliding
 import igcparagliding
-
+import plot
 
 kml_file = "2023-08-13-XSD-UB2F42-01.kml"
 igc_file = "2023-08-13-XSD-UB2F42-01.igc"
@@ -50,44 +50,5 @@ if __name__ == "__main__":
     print("Min vertical speed: " + str(igc.track.min_vertical_speed()) + " m/s")
     print("Average finesse: " + str(igc.track.average_finesse()))
     
+    plot.plot_track(igc.track.paraliding_geoms)
 
-
-
-    import pandas as pd
-
-    data = list()
-
-    for point in igc.track.paraliding_geoms:
-        data.append([point.x, point.y, point.z, point.time, point.speed_2d])
-
-
-    columns = ['Longitude', 'Latitude', 'Altitude', 'Time', 'Speed']
-    df = pd.DataFrame(data, columns=columns)
-
-    import folium
-    from folium.plugins import MarkerCluster
-    import pandas as pd
-
-    #Define coordinates of where we want to center our map
-    boulder_coords = list(df.iloc[0][0:2])
-
-    #Create the map
-    my_map = folium.Map(location = boulder_coords, zoom_start = 13)
-
-    folium.PolyLine(tuple(df[['Longitude', 'Latitude']].itertuples(index=False, name=None))).add_to(my_map)
-
-    # for point in igc.track.paraliding_geoms:
-    #     folium.Marker([point.x, point.y], icon=folium.Icon(icon="bus-simple", icon_color="white", prefix='fa'), tooltip=str(point.z)).add_to(my_map)
-
-    igc.track.paraliding_geoms[0].x
-    folium.Marker([igc.track.paraliding_geoms[0].x, igc.track.paraliding_geoms[0].y], 
-                  popup="start", 
-                  tooltip=str(igc.track.paraliding_geoms[0].z),
-                  icon=folium.Icon(color="green") ).add_to(my_map)
-    folium.Marker([igc.track.paraliding_geoms[-1].x, igc.track.paraliding_geoms[-1].y], 
-                  popup="start", 
-                  tooltip=str(igc.track.paraliding_geoms[-1].z), 
-                  icon=folium.Icon(color="red") ).add_to(my_map)
-
-    #Display the map
-    my_map.show_in_browser()

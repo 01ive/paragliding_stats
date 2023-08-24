@@ -155,8 +155,5 @@ class ParaglidingLine(pygeoif.geometry.LineString):
         return average_speed_3d
     
     def average_finesse(self):
-        average_finesse = 0
-        for point in self.paraliding_geoms:
-            average_finesse += point.finesse
-        average_finesse /= len(self.paraliding_geoms)
-        return average_finesse
+        return  self.distance_total_2d() / self.high()
+    
